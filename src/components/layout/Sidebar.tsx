@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Calendar,
@@ -11,14 +11,18 @@ import {
   FileText,
   Power,
   ChevronDown,
-  User
+  User,
+  LogOut,
+  AlertCircle
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import logoUrl from '../../assets/images/logo/7sens.webp';
 import bgImage from '../../assets/images/logo/authback.png';
 
 export const Sidebar = () => {
+  const navigate = useNavigate();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({ Events: true });
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const toggleMenu = (name: string) => {
     setOpenMenus(prev => ({ ...prev, [name]: !prev[name] }));
@@ -55,6 +59,7 @@ export const Sidebar = () => {
     { name: 'Settings', icon: Settings, path: '/settings' },
     // { name: 'System Logs', icon: FileText, path: '/system-logs' },
     { name: 'Design System', icon: FileText, path: '/design-system' },
+    { name: '404 Error Page', icon: AlertCircle, path: '/404-preview' },
   ];
 
   return (
@@ -143,14 +148,46 @@ export const Sidebar = () => {
         </div>
 
         {/* Log Out */}
-        <NavLink
-          to="/login"
-          className="group flex items-center gap-4 px-4 py-3 text-gray-600 no-underline rounded-none transition-all duration-200 font-medium hover:bg-red-50 hover:text-red-600"
+        <button
+          onClick={() => setShowLogoutDialog(true)}
+          className="group flex w-full items-center gap-4 px-4 py-3 text-gray-600 rounded-none transition-all duration-200 font-medium hover:bg-red-50 hover:text-red-600 bg-transparent border-none cursor-pointer"
         >
           <Power size={20} className="text-gray-500 group-hover:text-red-600 transition-colors" />
           <span>Log Out</span>
-        </NavLink>
+        </button>
       </div>
+
+      {/* Logout Dialog */}
+      {showLogoutDialog && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-[400px] bg-white p-10 shadow-2xl flex flex-col items-center text-center">
+            <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mb-6">
+              <LogOut size={28} className="text-[#e3000f]" />
+            </div>
+            <h3 className="text-2xl font-serif font-semibold text-[#1a2b49] mb-4">Ready to Leave?</h3>
+            <p className="text-[#64748b] text-base mb-8 leading-relaxed px-2">
+              Are you sure you want to log out of your account? You will need to enter your credentials to log back in.
+            </p>
+            <div className="flex flex-col gap-4 w-full">
+              <button 
+                onClick={() => {
+                  setShowLogoutDialog(false);
+                  navigate('/login');
+                }}
+                className="w-full py-3.5 bg-[#e3000f] hover:bg-red-700 text-white font-semibold transition-colors rounded-none"
+              >
+                Yes, Log Out
+              </button>
+              <button 
+                onClick={() => setShowLogoutDialog(false)}
+                className="w-full py-2 bg-transparent hover:bg-gray-50 text-[#334155] font-semibold transition-colors rounded-none"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 };

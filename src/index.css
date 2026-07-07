@@ -8,7 +8,7 @@
   --color-gold: #C9A84C;
   --color-deep-blue: #112240;
   --color-cream: #F9F9F9;
-  
+
   --color-success: #10B981;
   --color-success-bg: #D1FAE5;
   --color-error: #EF4444;
@@ -23,7 +23,13 @@
   body {
     @apply font-sans bg-[var(--color-cream)] text-gray-900;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading text-[var(--color-navy)] font-semibold;
   }
 }

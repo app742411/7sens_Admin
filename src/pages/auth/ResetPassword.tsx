@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
-import { Lock, EyeOff, Eye, ArrowRight } from 'lucide-react';
+import { Lock, EyeOff, Eye, ArrowRight, CheckCircle2 } from 'lucide-react';
 import logoUrl from '../../assets/images/logo/7sens.webp';
 
 export const ResetPassword = () => {
@@ -13,6 +13,7 @@ export const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleReset = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,9 +21,28 @@ export const ResetPassword = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      navigate('/login');
+      setIsSuccess(true);
     }, 1500);
   };
+
+  if (isSuccess) {
+    return (
+      <div className="flex flex-col items-center w-full text-center">
+        <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-6">
+          <CheckCircle2 size={32} className="text-green-500" />
+        </div>
+        <h2 className="text-[var(--color-navy)] text-2xl font-heading font-semibold mb-2">Password Reset Successfully</h2>
+        <p className="text-gray-500 text-sm mb-8">Your password has been successfully updated. You can now log in with your new password.</p>
+        <Button 
+          variant="primary" 
+          className="w-full h-12 flex justify-center items-center font-semibold !shadow-none !rounded-none hover:bg-[#253965] transition-all duration-300"
+          onClick={() => navigate('/login')}
+        >
+          <span>Go to Login</span>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -51,9 +71,10 @@ export const ResetPassword = () => {
             id="password" 
             type={showPassword ? "text" : "password"}
             placeholder="Enter new password" 
+            defaultValue="password123"
             required 
             iconLeft={<Lock size={18} />}
-            iconRight={showPassword ? <Eye size={18} onClick={() => setShowPassword(false)} /> : <EyeOff size={18} onClick={() => setShowPassword(true)} />}
+            iconRight={showPassword ? <Eye size={18} onClick={() => setShowPassword(false)} className="cursor-pointer text-gray-400 hover:text-gray-600" /> : <EyeOff size={18} onClick={() => setShowPassword(true)} className="cursor-pointer text-gray-400 hover:text-gray-600" />}
           />
         </div>
 
@@ -63,9 +84,10 @@ export const ResetPassword = () => {
             id="confirmPassword" 
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm new password" 
+            defaultValue="password123"
             required 
             iconLeft={<Lock size={18} />}
-            iconRight={showConfirmPassword ? <Eye size={18} onClick={() => setShowConfirmPassword(false)} /> : <EyeOff size={18} onClick={() => setShowConfirmPassword(true)} />}
+            iconRight={showConfirmPassword ? <Eye size={18} onClick={() => setShowConfirmPassword(false)} className="cursor-pointer text-gray-400 hover:text-gray-600" /> : <EyeOff size={18} onClick={() => setShowConfirmPassword(true)} className="cursor-pointer text-gray-400 hover:text-gray-600" />}
           />
         </div>
 

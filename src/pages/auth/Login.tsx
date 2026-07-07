@@ -40,6 +40,7 @@ export const Login = () => {
             id="email" 
             type="email" 
             placeholder="Enter your email" 
+            defaultValue="admin@7sens.com"
             required 
             autoComplete="email"
             iconLeft={<Mail size={18} />}
@@ -50,12 +51,13 @@ export const Login = () => {
           <label htmlFor="password" className="text-sm font-semibold text-[var(--color-navy)]">Password</label>
           <Input 
             id="password" 
-            type="password" 
+            type={showPassword ? "text" : "password"} 
             placeholder="Enter your password" 
+            defaultValue="password123"
             required 
             autoComplete="current-password"
             iconLeft={<Lock size={18} />}
-            iconRight={showPassword ? <Eye size={18} onClick={() => setShowPassword(false)} /> : <EyeOff size={18} onClick={() => setShowPassword(true)} />}
+            iconRight={showPassword ? <Eye size={18} onClick={() => setShowPassword(false)} className="cursor-pointer text-gray-400 hover:text-gray-600" /> : <EyeOff size={18} onClick={() => setShowPassword(true)} className="cursor-pointer text-gray-400 hover:text-gray-600" />}
           />
         </div>
 
