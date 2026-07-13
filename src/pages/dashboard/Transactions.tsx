@@ -13,12 +13,11 @@ import {
   DollarSign,
   CheckCircle2,
   XCircle,
-  TrendingUp,
-  TrendingDown,
   BarChart3,
   Users
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { MetricCard } from '../../components/common/MetricCard';
 
 const MOCK_TRANSACTIONS = [
   {
@@ -202,84 +201,63 @@ export const Transactions = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        
-        {/* Metric 1 */}
-        <div className="bg-white p-5 border border-gray-100 rounded-none shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 bg-orange-50 flex flex-col items-center justify-center text-orange-500 shrink-0">
-            <FileText size={20} />
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wide">Total Transactions</p>
-            <h3 className="text-2xl font-bold text-[#1B2A4A]">1,246</h3>
-            <p className="text-[10px] text-green-500 flex items-center gap-1 mt-1 font-medium">
-              <TrendingUp size={12} /> 18.7% from last month
-            </p>
-          </div>
-        </div>
-
-        {/* Metric 2 */}
-        <div className="bg-white p-5 border border-gray-100 rounded-none shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 bg-yellow-50 flex flex-col items-center justify-center text-yellow-500 shrink-0">
-            <DollarSign size={20} />
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wide">Total Amount</p>
-            <h3 className="text-2xl font-bold text-[#1B2A4A]">CHF 125,430</h3>
-            <p className="text-[10px] text-green-500 flex items-center gap-1 mt-1 font-medium">
-              <TrendingUp size={12} /> 16.2% from last month
-            </p>
-          </div>
-        </div>
-
-        {/* Metric 3 */}
-        <div className="bg-white p-5 border border-gray-100 rounded-none shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 border border-green-100 rounded-full flex flex-col items-center justify-center text-green-500 shrink-0 mx-2">
-            <CheckCircle2 size={24} />
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wide">Successful</p>
-            <h3 className="text-2xl font-bold text-[#1B2A4A]">1,102</h3>
-            <p className="text-[10px] text-green-500 flex items-center gap-1 mt-1 font-medium">
-              <TrendingUp size={12} /> 17.3% from last month
-            </p>
-          </div>
-        </div>
-
-        {/* Metric 4 */}
-        <div className="bg-white p-5 border border-gray-100 rounded-none shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 bg-red-50/50 rounded-full flex flex-col items-center justify-center text-red-400 shrink-0 mx-2">
-            <RefreshCcw size={20} />
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wide">Refunded</p>
-            <h3 className="text-2xl font-bold text-[#1B2A4A]">68</h3>
-            <p className="text-[10px] text-green-500 flex items-center gap-1 mt-1 font-medium">
-              <TrendingUp size={12} /> 9.8% from last month
-            </p>
-          </div>
-        </div>
-
-        {/* Metric 5 */}
-        <div className="bg-white p-5 border border-gray-100 rounded-none shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 border border-red-100 rounded-full flex flex-col items-center justify-center text-red-500 shrink-0 mx-2">
-            <XCircle size={24} />
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wide">Failed</p>
-            <h3 className="text-2xl font-bold text-[#1B2A4A]">76</h3>
-            <p className="text-[10px] text-red-500 flex items-center gap-1 mt-1 font-medium">
-              <TrendingDown size={12} /> 4.3% from last month
-            </p>
-          </div>
-        </div>
-
+        <MetricCard 
+          title="Total Transactions" 
+          value="1,246" 
+          icon={<FileText size={20} />} 
+          trend="up" 
+          trendValue="18.7%" 
+          trendText="from last month"
+          iconBgClass="bg-orange-50"
+          iconColorClass="text-orange-500"
+        />
+        <MetricCard 
+          title="Total Amount" 
+          value="CHF 125,430" 
+          icon={<DollarSign size={20} />} 
+          trend="up" 
+          trendValue="16.2%" 
+          trendText="from last month"
+          iconBgClass="bg-yellow-50"
+          iconColorClass="text-yellow-500"
+        />
+        <MetricCard 
+          title="Successful" 
+          value="1,102" 
+          icon={<CheckCircle2 size={20} />} 
+          trend="up" 
+          trendValue="17.3%" 
+          trendText="from last month"
+          iconBgClass="bg-green-50"
+          iconColorClass="text-green-500"
+        />
+        <MetricCard 
+          title="Refunded" 
+          value="68" 
+          icon={<RefreshCcw size={18} />} 
+          trend="up" 
+          trendValue="9.8%" 
+          trendText="from last month"
+          iconBgClass="bg-purple-50"
+          iconColorClass="text-purple-500"
+        />
+        <MetricCard 
+          title="Failed" 
+          value="76" 
+          icon={<XCircle size={20} />} 
+          trend="down" 
+          trendValue="4.3%" 
+          trendText="from last month"
+          iconBgClass="bg-red-50"
+          iconColorClass="text-red-500"
+        />
       </div>
 
       {/* Main Layout */}
       <div className="flex flex-col xl:flex-row gap-6 items-start">
         
         {/* Left Column - Table */}
-        <div className="flex-1 w-full bg-white rounded-none shadow-sm border border-gray-100 flex flex-col">
+        <div className="flex-1 min-w-0 w-full bg-white rounded-none shadow-sm border border-gray-100 flex flex-col">
           
           {/* Toolbar */}
           <div className="p-5 border-b border-gray-100 flex flex-col lg:flex-row gap-4 justify-between items-center">
@@ -315,7 +293,7 @@ export const Transactions = () => {
 
           {/* Table */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[1000px]">
+            <table className="w-full text-left border-collapse min-w-[850px]">
               <thead>
                 <tr className="border-b border-gray-100 text-[11px] font-bold text-[#1B2A4A] uppercase tracking-wider bg-gray-50/50">
                   <th className="px-5 py-4">Transaction ID</th>

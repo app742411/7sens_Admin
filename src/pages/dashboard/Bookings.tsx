@@ -281,7 +281,7 @@ export const Bookings = () => {
       <div className="flex flex-col xl:flex-row gap-6 items-start">
         
         {/* Left Column - Main Content */}
-        <div className="flex-1 w-full bg-white rounded-none shadow-sm border border-gray-100 flex flex-col">
+        <div className="flex-1 min-w-0 w-full bg-white rounded-none shadow-sm border border-gray-100 flex flex-col">
           
           {/* Top Toolbar */}
           <div className="p-5 border-b border-gray-100 flex flex-col lg:flex-row gap-4 justify-between items-center">
@@ -369,44 +369,43 @@ export const Bookings = () => {
 
           {/* Table Content */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[1100px]">
+            <table className="w-full text-left border-collapse min-w-[850px]">
               <thead>
                 <tr className="border-b border-gray-100 text-[10px] font-bold text-[#1B2A4A] uppercase tracking-wider bg-white">
-                  <th className="px-5 py-4 w-10">
+                  <th className="px-3 py-4 w-[50px] shrink-0">
                     <input type="checkbox" className="rounded-none border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]" />
                   </th>
-                  <th className="px-5 py-4">Booking ID</th>
-                  <th className="px-5 py-4 min-w-[220px]">Event</th>
-                  <th className="px-5 py-4 min-w-[200px]">User</th>
-                  <th className="px-5 py-4">Date & Time</th>
-                  <th className="px-5 py-4">Tickets</th>
-                  <th className="px-5 py-4">Amount</th>
-                  <th className="px-5 py-4">Status</th>
-                  <th className="px-5 py-4">Payment</th>
-                  <th className="px-5 py-4 text-center">Actions</th>
+                  <th className="px-3 py-4 w-[110px]">Booking ID</th>
+                  <th className="px-3 py-4 w-[220px]">Event</th>
+                  <th className="px-3 py-4 w-[180px]">User</th>
+                  <th className="px-3 py-4 w-[90px]">Tickets</th>
+                  <th className="px-3 py-4 w-[90px]">Amount</th>
+                  <th className="px-3 py-4 w-[95px]">Status</th>
+                  <th className="px-3 py-4 w-[130px]">Payment</th>
+                  <th className="px-3 py-4 w-[85px] text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {MOCK_BOOKINGS.map((booking) => (
                   <tr key={booking.id} className="hover:bg-gray-50/50 transition-colors bg-white">
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-4">
                       <input type="checkbox" className="rounded-none border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]" />
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-4">
                       <h4 className="text-sm font-bold text-[#1B2A4A]">{booking.id}</h4>
                       <p className="text-[11px] text-gray-500 whitespace-nowrap">{booking.bookedOn}</p>
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-4">
                       <div className="flex items-center gap-3">
-                        <img src={booking.event.image} alt={booking.event.title} className="w-12 h-8 rounded-sm object-cover shrink-0" />
+                        <img src={booking.event.image} alt={booking.event.title} className="w-12 h-8 rounded-none object-cover shrink-0 border border-gray-100" />
                         <div>
                           <p className="text-sm font-bold text-[#1B2A4A] truncate max-w-[160px]">{booking.event.title}</p>
                           <p className="text-[11px] text-gray-500 whitespace-nowrap">{booking.event.date} • {booking.event.time}</p>
-                          <p className="text-[11px] text-gray-500 whitespace-nowrap">{booking.event.location}</p>
+                          <p className="text-[11px] text-gray-400 whitespace-nowrap">{booking.event.location}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-4">
                       <div className="flex items-center gap-2">
                         <img src={booking.user.avatar} alt={booking.user.name} className="w-8 h-8 rounded-full object-cover shrink-0" />
                         <div>
@@ -415,41 +414,33 @@ export const Bookings = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4">
-                      <p className="text-sm text-[#1B2A4A] font-medium whitespace-pre-line">{booking.dateTime}</p>
+                    <td className="px-3 py-4 whitespace-nowrap">
+                      <p className="text-sm text-gray-700 font-semibold">{booking.tickets.replace('\n', ' ')}</p>
                     </td>
-                    <td className="px-5 py-4">
-                      <p className="text-sm text-[#1B2A4A] font-medium whitespace-pre-line">{booking.tickets}</p>
-                    </td>
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-4 whitespace-nowrap">
                       <p className="text-sm text-[#1B2A4A] font-bold">{booking.amount}</p>
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-4 whitespace-nowrap">
                       <StatusBadge status={booking.status} />
                     </td>
-                    <td className="px-5 py-4">
-                      <div className="flex flex-col gap-1 items-start">
-                        <span className={`text-xs font-semibold ${
-                          booking.paymentStatus === 'Paid' ? 'text-green-600' :
-                          booking.paymentStatus === 'Unpaid' ? 'text-orange-500' :
-                          'text-gray-500'
-                        }`}>
-                          {booking.paymentStatus}
-                        </span>
-                        {booking.paymentMethod && (
-                          <span className="text-[11px] text-gray-500">{booking.paymentMethod}</span>
-                        )}
-                      </div>
+                    <td className="px-3 py-4 whitespace-nowrap">
+                      <span className={`px-2 py-0.5 text-xs font-semibold rounded-none ${
+                        booking.paymentStatus === 'Paid' ? 'bg-green-50 text-green-600' :
+                        booking.paymentStatus === 'Unpaid' ? 'bg-orange-50 text-orange-500' :
+                        'bg-gray-100 text-gray-500'
+                      }`}>
+                        {booking.paymentStatus}
+                      </span>
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-4">
                       <div className="flex items-center justify-center gap-2">
                         <button 
                           onClick={() => navigate(`/bookings/${booking.id}`)}
-                          className="p-1.5 border border-gray-200 text-gray-500 hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors rounded-none bg-white"
+                          className="p-1.5 border border-gray-200 text-gray-500 hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors rounded-none bg-white cursor-pointer"
                         >
                           <Eye size={16} />
                         </button>
-                        <button className="p-1.5 border border-gray-200 text-gray-500 hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors rounded-none bg-white">
+                        <button className="p-1.5 border border-gray-200 text-gray-500 hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors rounded-none bg-white cursor-pointer">
                           <MoreHorizontal size={16} />
                         </button>
                       </div>
@@ -581,35 +572,35 @@ export const Bookings = () => {
             <div className="flex flex-col gap-4 mb-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img src="https://picsum.photos/seed/event1/40/40" className="w-8 h-8 rounded-sm object-cover" alt="Sunset" />
+                  <img src="https://picsum.photos/seed/event1/40/40" className="w-8 h-8 rounded-sm object-cover shrink-0" alt="Sunset" />
                   <span className="text-xs font-semibold text-[#1B2A4A]">Sunset Rooftop Party</span>
                 </div>
                 <span className="text-xs font-bold text-[#1B2A4A]">342</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img src="https://picsum.photos/seed/event2/40/40" className="w-8 h-8 rounded-sm object-cover" alt="Wine" />
+                  <img src="https://picsum.photos/seed/event2/40/40" className="w-8 h-8 rounded-sm object-cover shrink-0" alt="Wine" />
                   <span className="text-xs font-semibold text-[#1B2A4A]">Wine & Dine Experience</span>
                 </div>
                 <span className="text-xs font-bold text-[#1B2A4A]">287</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img src="https://picsum.photos/seed/event4/40/40" className="w-8 h-8 rounded-sm object-cover" alt="Yacht" />
+                  <img src="https://picsum.photos/seed/event4/40/40" className="w-8 h-8 rounded-sm object-cover shrink-0" alt="Yacht" />
                   <span className="text-xs font-semibold text-[#1B2A4A]">Exclusive Yacht Night</span>
                 </div>
                 <span className="text-xs font-bold text-[#1B2A4A]">215</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img src="https://picsum.photos/seed/event5/40/40" className="w-8 h-8 rounded-sm object-cover" alt="Art" />
+                  <img src="https://picsum.photos/seed/event5/40/40" className="w-8 h-8 rounded-sm object-cover shrink-0" alt="Art" />
                   <span className="text-xs font-semibold text-[#1B2A4A]">Private Art Gallery</span>
                 </div>
                 <span className="text-xs font-bold text-[#1B2A4A]">198</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img src="https://picsum.photos/seed/event6/40/40" className="w-8 h-8 rounded-sm object-cover" alt="Jazz" />
+                  <img src="https://picsum.photos/seed/event6/40/40" className="w-8 h-8 rounded-sm object-cover shrink-0" alt="Jazz" />
                   <span className="text-xs font-semibold text-[#1B2A4A]">Live Jazz Concert</span>
                 </div>
                 <span className="text-xs font-bold text-[#1B2A4A]">158</span>

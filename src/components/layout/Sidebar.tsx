@@ -13,7 +13,8 @@ import {
   ChevronDown,
   User,
   LogOut,
-  AlertCircle
+  AlertCircle,
+  Percent
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import logoUrl from '../../assets/images/logo/7sens.webp';
@@ -39,6 +40,7 @@ export const Sidebar = () => {
       ]
     },
     { name: 'Bookings', icon: Ticket, path: '/bookings' },
+    { name: 'Promo Codes', icon: Percent, path: '/coupons' },
     { name: 'Users', icon: Users, path: '/users' },
     { name: 'Payments', icon: CreditCard, path: '/payments' },
     // { name: 'Waiting List', icon: Hourglass, path: '/waiting-list' },

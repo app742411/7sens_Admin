@@ -16,6 +16,7 @@ import { Settings } from './pages/dashboard/Settings';
 import { TransactionDetails } from './pages/dashboard/TransactionDetails';
 import { Bookings } from './pages/dashboard/Bookings';
 import { BookingDetails } from './pages/dashboard/BookingDetails';
+import { Coupons } from './pages/dashboard/Coupons';
 import { HomepageCMS } from './pages/dashboard/cms/HomepageCMS';
 import { TermsCMS } from './pages/dashboard/cms/TermsCMS';
 import { PrivacyCMS } from './pages/dashboard/cms/PrivacyCMS';
@@ -42,6 +43,7 @@ function App() {
           <Route path="payments/:id" element={<TransactionDetails />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="bookings/:id" element={<BookingDetails />} />
+          <Route path="coupons" element={<Coupons />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="settings" element={<Settings />} />
           <Route path="cms/homepage" element={<HomepageCMS />} />

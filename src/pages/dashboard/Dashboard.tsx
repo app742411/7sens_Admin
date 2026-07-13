@@ -231,17 +231,23 @@ export const Dashboard = () => {
 
 // Sub-components for cleaner code
 const StatCard = ({ title, value, percent, icon }: any) => (
-  <div className="bg-white p-6 rounded-none shadow-sm border border-gray-100 flex flex-col gap-4 relative overflow-hidden">
-    <div className="flex items-center justify-center w-12 h-12 rounded-none bg-[#C9A84C]/10 mb-2">
-      {icon}
+  <div className="bg-white p-5 border border-gray-100 rounded-none shadow-sm flex flex-col gap-4 relative overflow-hidden group transition-all duration-300 hover:shadow-md hover:border-[#C9A84C]/50">
+    {/* Dynamic corner gradient glow */}
+    <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-gradient-to-br from-transparent to-[#C9A84C]/5 rounded-full group-hover:scale-150 transition-transform duration-500 pointer-events-none" />
+    
+    <div className="flex justify-between items-start z-10">
+      <div className="flex flex-col gap-1.5">
+        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{title}</span>
+        <span className="text-2xl font-extrabold text-[#1B2A4A] tracking-tight">{value}</span>
+      </div>
+      <div className="w-10 h-10 rounded-none flex items-center justify-center transition-all duration-300 shadow-sm shrink-0 bg-[#C9A84C]/10 text-[#C9A84C] group-hover:from-[#C9A84C] group-hover:to-[#b59641] group-hover:bg-gradient-to-br group-hover:text-white">
+        {icon}
+      </div>
     </div>
-    <div className="flex flex-col gap-1">
-      <span className="text-sm font-medium text-gray-500 text-center absolute top-6 left-20">{title}</span>
-      <span className="text-2xl font-bold text-[#1B2A4A] text-center absolute top-12 left-20">{value}</span>
-    </div>
-    <div className="flex items-center gap-1 text-green-500 text-xs font-medium mt-10">
-      <ArrowUpRight size={14} />
-      <span>{percent} <span className="text-gray-400 font-normal ml-1">from last month</span></span>
+    
+    <div className="flex items-center gap-1 text-xs font-bold mt-1 border-t border-gray-50 pt-3 z-10 text-green-600">
+      <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+      <span>{percent} <span className="text-gray-400 font-medium ml-0.5">from last month</span></span>
     </div>
   </div>
 );
