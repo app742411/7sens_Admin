@@ -869,7 +869,7 @@ export const Coupons = () => {
                 {/* Min Spend */}
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-[#1B2A4A] flex items-center gap-1.5">
-                    Min Spend Requirement <Info size={14} className="text-gray-400" title="Optional limit" />
+                    Min Spend Requirement <Info size={14} className="text-gray-400"  />
                   </label>
                   <div className="flex relative items-center">
                     <span className="absolute left-3 text-sm text-gray-500 font-medium">CHF</span>
