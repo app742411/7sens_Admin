@@ -14,7 +14,9 @@ import {
   User,
   LogOut,
   AlertCircle,
-  Percent
+  Percent,
+  PieChart,
+  Library
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import logoUrl from '../../assets/images/logo/7sens.webp';
@@ -24,6 +26,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({ Events: true });
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const toggleMenu = (name: string) => {
     setOpenMenus(prev => ({ ...prev, [name]: !prev[name] }));
@@ -45,6 +48,8 @@ export const Sidebar = () => {
     { name: 'Payments', icon: CreditCard, path: '/payments' },
     // { name: 'Waiting List', icon: Hourglass, path: '/waiting-list' },
     { name: 'Notifications', icon: Bell, path: '/notifications' },
+    { name: 'Matchmaking Reports', icon: PieChart, path: '/reports/matchmaking' },
+    { name: 'Questionnaire Library', icon: Library, path: '/questionnaire-library' },
     // { name: 'Analytics', icon: BarChart2, path: '/analytics' },
     {
       name: 'CMS',
@@ -81,10 +86,10 @@ export const Sidebar = () => {
                 <>
                   <div
                     onClick={() => toggleMenu(item.name)}
-                    className="group flex items-center justify-between px-4 py-3 cursor-pointer text-gray-600 hover:bg-[#C9A84C]/10 hover:text-[#C9A84C] transition-all duration-200 font-medium rounded-none"
+                    className="group flex items-center justify-between px-4 py-2 cursor-pointer text-[#1B2A4A] text-sm hover:bg-[#C9A84C]/10 hover:text-[#C9A84C] transition-all duration-200 font-medium rounded-none"
                   >
                     <div className="flex items-center gap-4">
-                      <item.icon size={20} className="text-gray-500 group-hover:text-[#C9A84C] transition-colors" />
+                      <item.icon size={18} className="text-[#1B2A4A]/70 group-hover:text-[#C9A84C] transition-colors" />
                       <span>{item.name}</span>
                     </div>
                     <ChevronDown size={16} className={`text-gray-400 group-hover:text-[#C9A84C] transition-transform ${openMenus[item.name] ? 'rotate-180' : ''}`} />
@@ -99,7 +104,7 @@ export const Sidebar = () => {
                               "block px-3 py-2 text-sm no-underline rounded-none transition-colors font-medium border-l-2",
                               isActive
                                 ? "border-[#C9A84C] text-[#C9A84C] bg-orange-50/30"
-                                : "border-transparent text-gray-500 hover:text-[#C9A84C] hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10"
+                                : "border-transparent text-[#1B2A4A]/80 hover:text-[#C9A84C] hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10"
                             )}
                             end={true}
                           >
@@ -114,16 +119,16 @@ export const Sidebar = () => {
                 <NavLink
                   to={item.path!}
                   className={({ isActive }) => clsx(
-                    "group flex items-center gap-4 px-4 py-3 no-underline rounded-none transition-all duration-200 font-medium",
+                    "group flex items-center gap-4 px-4 py-2 no-underline rounded-none transition-all duration-200 font-medium text-sm",
                     isActive
                       ? "bg-[#C9A84C] text-white shadow-md"
-                      : "text-gray-600 hover:bg-[#C9A84C]/10 hover:text-[#C9A84C]"
+                      : "text-[#1B2A4A] hover:bg-[#C9A84C]/10 hover:text-[#C9A84C]"
                   )}
                   end={item.path === '/'}
                 >
                   {({ isActive }) => (
                     <>
-                      <item.icon size={20} className={isActive ? "text-white" : "text-gray-500 group-hover:text-[#C9A84C] transition-colors"} />
+                      <item.icon size={18} className={isActive ? "text-white" : "text-[#1B2A4A]/70 group-hover:text-[#C9A84C] transition-colors"} />
                       <span>{item.name}</span>
                     </>
                   )}
@@ -134,29 +139,46 @@ export const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="p-6 flex flex-col gap-4">
+      <div className="p-6 relative">
+        {/* Profile Dropdown Menu */}
+        {showProfileMenu && (
+          <div className="absolute bottom-[88px] left-6 right-6 bg-white border border-gray-100 shadow-lg p-2 z-50 flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2">
+            <button 
+              onClick={() => { setShowProfileMenu(false); navigate('/settings'); }}
+              className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A84C] transition-colors flex items-center gap-2 font-medium"
+            >
+              <Settings size={16} /> Settings
+            </button>
+            <div className="h-px bg-gray-100 my-1"></div>
+            <button 
+              onClick={() => { setShowProfileMenu(false); setShowLogoutDialog(true); }}
+              className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2 font-medium"
+            >
+              <Power size={16} /> Log Out
+            </button>
+          </div>
+        )}
+
         {/* User Profile Block */}
-        <div className="flex items-center justify-between p-3 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-none shadow-sm cursor-pointer hover:bg-white transition-colors">
+        <div 
+          onClick={() => setShowProfileMenu(!showProfileMenu)}
+          className={clsx(
+            "flex items-center justify-between p-3 bg-white/80 backdrop-blur-sm border border-gray-100 shadow-sm cursor-pointer hover:border-[#C9A84C]/50 transition-all duration-200 group relative overflow-hidden",
+            showProfileMenu ? "border-[#C9A84C]/50 bg-white" : ""
+          )}
+        >
+          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#C9A84C] to-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-none bg-orange-100 flex items-center justify-center text-orange-500 overflow-hidden">
+            <div className="w-10 h-10 rounded-none bg-gradient-to-br from-[#1B2A4A] to-[#2a3f6c] flex items-center justify-center text-white overflow-hidden shadow-inner">
               <User size={20} />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-bold text-[var(--color-navy)]">Admin User</span>
-              <span className="text-xs text-gray-500">Super Admin</span>
+              <span className="text-sm font-bold text-[#1B2A4A]">Admin User</span>
+              <span className="text-xs text-[#C9A84C] font-semibold tracking-wider uppercase">Super Admin</span>
             </div>
           </div>
-          <ChevronDown size={16} className="text-gray-400" />
+          <ChevronDown size={16} className={clsx("text-gray-400 transition-transform duration-200", showProfileMenu ? "rotate-180 text-[#C9A84C]" : "group-hover:text-[#C9A84C]")} />
         </div>
-
-        {/* Log Out */}
-        <button
-          onClick={() => setShowLogoutDialog(true)}
-          className="group flex w-full items-center gap-4 px-4 py-3 text-gray-600 rounded-none transition-all duration-200 font-medium hover:bg-red-50 hover:text-red-600 bg-transparent border-none cursor-pointer"
-        >
-          <Power size={20} className="text-gray-500 group-hover:text-red-600 transition-colors" />
-          <span>Log Out</span>
-        </button>
       </div>
 
       {/* Logout Dialog */}

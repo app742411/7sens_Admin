@@ -25,7 +25,8 @@ import {
   UserPlus,
   Trash2,
   CheckCircle2,
-  ArrowUp
+  ArrowUp,
+  Radio
 } from 'lucide-react';
 import { MOCK_EVENTS } from './Events';
 
@@ -205,7 +206,13 @@ export const EventDetails = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
+        <div className="flex items-center gap-3 w-full md:w-auto mt-4 md:mt-0 flex-wrap md:flex-nowrap">
+          <button 
+            onClick={() => navigate(`/events/${event.id}/live`)}
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2 bg-[var(--color-navy)] text-white font-medium rounded-none hover:bg-opacity-90 transition-colors shadow-sm"
+          >
+            <Radio size={16} /> Live Control
+          </button>
           <button 
             onClick={() => navigate(`/events/edit/${event.id}`)}
             className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2 border border-gray-200 text-gray-700 font-medium rounded-none hover:bg-gray-50 transition-colors shadow-sm"
@@ -338,16 +345,25 @@ export const EventDetails = () => {
                           </button>
                         </div>
                       </div>
-                      <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-[#1B2A4A] font-medium text-sm rounded-none hover:bg-gray-50 transition-colors whitespace-nowrap">
+                      <button 
+                        onClick={() => alert('Downloading Waitlist as CSV...')}
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-[#1B2A4A] font-medium text-sm rounded-none hover:bg-gray-50 transition-colors whitespace-nowrap"
+                      >
                         <Download size={16} /> Export Waitlist (CSV)
                       </button>
                     </>
                   ) : (
                     <>
-                      <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-[#1B2A4A] font-medium text-sm rounded-none hover:bg-gray-50 transition-colors">
+                      <button 
+                        onClick={() => alert('Downloading Participants as CSV...')}
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-[#1B2A4A] font-medium text-sm rounded-none hover:bg-gray-50 transition-colors"
+                      >
                         <Download size={16} /> Export
                       </button>
-                      <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-[#1B2A4A] font-medium text-sm rounded-none hover:bg-gray-50 transition-colors">
+                      <button 
+                        onClick={() => alert('Filter drawer opened.')}
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-[#1B2A4A] font-medium text-sm rounded-none hover:bg-gray-50 transition-colors"
+                      >
                         <Filter size={16} /> Filters
                       </button>
                     </>

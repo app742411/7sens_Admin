@@ -14,7 +14,8 @@ import {
   Star,
   ExternalLink,
   CreditCard,
-  AlertCircle
+  AlertCircle,
+  Calendar
 } from 'lucide-react';
 
 export const TransactionDetails = () => {
@@ -302,6 +303,13 @@ export const TransactionDetails = () => {
                   <span>Email</span>
                 </div>
                 <span className="font-medium text-[#1B2A4A]">maria.dupont@email.com</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 text-gray-500 w-24">
+                  <Calendar size={14} />
+                  <span>Date of Birth</span>
+                </div>
+                <span className="font-medium text-[#1B2A4A]">Aug 14, 1992 (32y)</span>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 text-gray-500 w-24">

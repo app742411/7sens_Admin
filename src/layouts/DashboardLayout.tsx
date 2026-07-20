@@ -16,9 +16,12 @@ export const DashboardLayout = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [language, setLanguage] = useState<'EN' | 'FR'>('EN');
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = MOCK_NOTIFICATIONS.filter(n => n.unread).length;
 
@@ -29,6 +32,9 @@ export const DashboardLayout = () => {
       }
       if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
         setShowProfileMenu(false);
+      }
+      if (langRef.current && !langRef.current.contains(event.target as Node)) {
+        setShowLanguageMenu(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -48,11 +54,39 @@ export const DashboardLayout = () => {
           </div>
           <div className="flex items-center gap-4">
             {/* Language Selector */}
-            <button className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-none shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-              <Globe size={16} className="text-gray-500" />
-              <span>EN</span>
-              <ChevronDown size={14} className="text-gray-400" />
-            </button>
+            <div className="relative" ref={langRef}>
+              <button 
+                onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-none shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+              >
+                {language === 'FR' ? (
+                  <img src="https://flagcdn.com/w20/fr.png" width="16" alt="FR" className="rounded-sm" />
+                ) : (
+                  <img src="https://flagcdn.com/w20/gb.png" width="16" alt="EN" className="rounded-sm" />
+                )}
+                <span>{language}</span>
+                <ChevronDown size={14} className={clsx("text-gray-400 transition-transform", showLanguageMenu && "rotate-180")} />
+              </button>
+
+              {showLanguageMenu && (
+                <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-100 shadow-xl z-50 overflow-hidden rounded-none animate-in fade-in slide-in-from-top-2 duration-200 py-1">
+                  <button 
+                    onClick={() => { setLanguage('FR'); setShowLanguageMenu(false); }}
+                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3 border-none bg-transparent text-left cursor-pointer font-medium"
+                  >
+                    <img src="https://flagcdn.com/w20/fr.png" width="16" alt="FR" className="rounded-sm" />
+                    <span>French</span>
+                  </button>
+                  <button 
+                    onClick={() => { setLanguage('EN'); setShowLanguageMenu(false); }}
+                    className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3 border-none bg-transparent text-left cursor-pointer font-medium"
+                  >
+                    <img src="https://flagcdn.com/w20/gb.png" width="16" alt="EN" className="rounded-sm" />
+                    <span>English</span>
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Notification Bell */}
             <div className="relative" ref={notificationRef}>

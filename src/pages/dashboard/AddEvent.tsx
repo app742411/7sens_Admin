@@ -95,7 +95,9 @@ export const AddEvent = () => {
     description: '',
     status: 'Waiting List',
     price: '',
-    internalNotes: ''
+    internalNotes: '',
+    tableCount: '',
+    roundDuration: '7'
   });
 
   useEffect(() => {
@@ -131,7 +133,9 @@ export const AddEvent = () => {
           description: 'This is a mocked description for ' + event.title,
           status: event.status,
           price: event.price.toString(),
-          internalNotes: 'Mock internal note'
+          internalNotes: 'Mock internal note',
+          tableCount: '20',
+          roundDuration: '7'
         });
       }
     }
@@ -144,7 +148,8 @@ export const AddEvent = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form Submitted:', formData);
-    // Submit logic here
+    alert('Event saved successfully!');
+    navigate('/events');
   };
 
   return (
@@ -308,6 +313,38 @@ export const AddEvent = () => {
                     placeholder="Select timer"
                   />
                   <p className="text-[11px] text-gray-400 mt-1">Default 24h or 48h - configurable</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5 mt-5">
+                {/* Row 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-[#1B2A4A] mb-1.5">Table Count <span className="text-red-500">*</span></label>
+                  <input 
+                    type="number" 
+                    name="tableCount"
+                    required
+                    min="1"
+                    value={formData.tableCount}
+                    onChange={handleChange}
+                    className="w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm"
+                    placeholder="Enter number of tables"
+                  />
+                  <p className="text-[11px] text-gray-400 mt-1">Used for live event rotation</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#1B2A4A] mb-1.5">Round Duration (Min) <span className="text-red-500">*</span></label>
+                  <input 
+                    type="number" 
+                    name="roundDuration"
+                    required
+                    min="1"
+                    value={formData.roundDuration}
+                    onChange={handleChange}
+                    className="w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm"
+                    placeholder="e.g. 7"
+                  />
+                  <p className="text-[11px] text-gray-400 mt-1">Default 7 minutes</p>
                 </div>
               </div>
             </div>
@@ -517,6 +554,16 @@ export const AddEvent = () => {
                 </div>
                 <span className="text-sm text-gray-500 text-right">
                   {formData.capacity || '-'}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-start">
+                <div className="flex items-center gap-3 text-sm font-medium text-[#1B2A4A]">
+                  <div className="w-4 h-4 rounded-full border-2 border-gray-400 shrink-0" />
+                  Table Count
+                </div>
+                <span className="text-sm text-gray-500 text-right">
+                  {formData.tableCount || '-'}
                 </span>
               </div>
 

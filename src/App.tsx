@@ -17,6 +17,9 @@ import { TransactionDetails } from './pages/dashboard/TransactionDetails';
 import { Bookings } from './pages/dashboard/Bookings';
 import { BookingDetails } from './pages/dashboard/BookingDetails';
 import { Coupons } from './pages/dashboard/Coupons';
+import { LiveEventControl } from './pages/dashboard/LiveEventControl';
+import { MatchmakingReports } from './pages/dashboard/MatchmakingReports';
+import { QuestionnaireLibrary } from './pages/dashboard/QuestionnaireLibrary';
 import { HomepageCMS } from './pages/dashboard/cms/HomepageCMS';
 import { TermsCMS } from './pages/dashboard/cms/TermsCMS';
 import { PrivacyCMS } from './pages/dashboard/cms/PrivacyCMS';
@@ -46,6 +49,9 @@ function App() {
           <Route path="coupons" element={<Coupons />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="events/:id/live" element={<LiveEventControl />} />
+          <Route path="reports/matchmaking" element={<MatchmakingReports />} />
+          <Route path="questionnaire-library" element={<QuestionnaireLibrary />} />
           <Route path="cms/homepage" element={<HomepageCMS />} />
           <Route path="cms/terms" element={<TermsCMS />} />
           <Route path="cms/privacy" element={<PrivacyCMS />} />
