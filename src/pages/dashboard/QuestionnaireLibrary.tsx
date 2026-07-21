@@ -1,4 +1,4 @@
-import { Library, AlertCircle, Search, Filter, Edit3, Lock } from 'lucide-react';
+import { Search, Filter, Edit3 } from 'lucide-react';
 import { useState } from 'react';
 
 import imgCoreValues from '../../cards7sens/valeurs/vfamille.png';

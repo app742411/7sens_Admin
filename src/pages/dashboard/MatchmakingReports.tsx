@@ -1,4 +1,4 @@
-import { PieChart, Users, Star, Activity, AlertCircle, FileText, ChevronDown, Download, Share2 } from 'lucide-react';
+import { Users, Star, Activity, AlertCircle, FileText, Download, Share2 } from 'lucide-react';
 
 const STATS = [
   { label: 'Mutual Yes Matches', value: '14', icon: Star, color: 'text-yellow-500', bg: 'bg-yellow-50' },

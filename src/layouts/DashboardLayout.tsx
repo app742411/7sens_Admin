@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Sidebar } from '../components/layout/Sidebar';
-import { Menu, Globe, ChevronDown, Bell, Ticket, Calendar, AlertCircle, CreditCard, CheckCircle2, User, Settings, LogOut, Shield } from 'lucide-react';
+import { Menu, ChevronDown, Bell, Ticket, Calendar, AlertCircle, CreditCard, CheckCircle2, User, Settings, LogOut, Shield } from 'lucide-react';
 import { clsx } from 'clsx';
 
 const MOCK_NOTIFICATIONS = [
