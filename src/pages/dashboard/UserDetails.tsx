@@ -211,16 +211,20 @@ export const UserDetails = () => {
               </div>
 
               <div className="flex flex-col gap-6">
-                <div className="grid grid-cols-[100px_1fr]">
-                  <span className="text-sm text-gray-500">Interests</span>
+                <div className="grid grid-cols-[150px_1fr]">
+                  <span className="text-sm text-gray-500">Hobbies</span>
                   <span className="text-sm font-medium text-[#1B2A4A]">Travel, Photography, Wine Tasting</span>
                 </div>
-                <div className="grid grid-cols-[100px_1fr]">
-                  <span className="text-sm text-gray-500">Looking For</span>
+                <div className="grid grid-cols-[150px_1fr]">
+                  <span className="text-sm text-gray-500">What I'm looking for</span>
                   <span className="text-sm font-medium text-[#1B2A4A]">Meaningful Conversations</span>
                 </div>
-                <div className="grid grid-cols-[100px_1fr]">
-                  <span className="text-sm text-gray-500">About Me</span>
+                <div className="grid grid-cols-[150px_1fr]">
+                  <span className="text-sm text-gray-500">Event Types Attended</span>
+                  <span className="text-sm font-medium text-[#1B2A4A]">Sunset Rooftop Party, Creative Workshop</span>
+                </div>
+                <div className="grid grid-cols-[150px_1fr]">
+                  <span className="text-sm text-gray-500">Personal Description</span>
                   <span className="text-sm font-medium text-gray-600 leading-relaxed">
                     I love meeting new people and exploring different cultures. Let's connect!
                   </span>

@@ -1,47 +1,192 @@
 import { Search, Filter, Edit3 } from 'lucide-react';
 import { useState } from 'react';
 
-import imgCoreValues from '../../cards7sens/valeurs/vfamille.png';
-import imgAttraction from '../../cards7sens/craquer/ccharisme.png';
-import imgDealBreakers from '../../cards7sens/Fuir/fmensonge.png';
-import imgFlaws from '../../cards7sens/Default/distrait.png';
-import imgDreams from '../../cards7sens/dream/rveillir.png';
-import imgLoveLanguage from '../../cards7sens/Besoin/Baffection.png';
-import imgLifestyle from '../../cards7sens/dream/rborddemer.png';
-import imgRelationshipVision from '../../cards7sens/dream/ramesoeur.png';
+type QuestionType = 'Profile' | 'Post-Date';
 
-// Hardcoded for MVP based on Matchmaking Engine Specification
-const MOCK_CATEGORIES = [
-  { id: 1, name: 'My Core Values', image: imgCoreValues, weight: 25, selectionLimit: 5, answersCount: 15, description: 'Identifies the principles that are most important to the user in life and in a relationship.' },
-  { id: 2, name: 'What Makes Me Fall for Someone', image: imgAttraction, weight: 20, selectionLimit: 5, answersCount: 15, description: 'Identifies the qualities that naturally create attraction for the user.' },
-  { id: 3, name: 'My Biggest Deal Breakers', image: imgDealBreakers, weight: 20, selectionLimit: 5, answersCount: 15, description: 'Identifies behaviours or characteristics that the user considers unacceptable.' },
-  { id: 4, name: 'My Flaws', image: imgFlaws, weight: 5, selectionLimit: 3, answersCount: 15, description: 'Allows users to identify personality traits they recognise in themselves.' },
-  { id: 5, name: 'My Dreams', image: imgDreams, weight: 5, selectionLimit: 3, answersCount: 15, description: 'Identifies the user’s most important personal aspirations and life ambitions.' },
-  { id: 6, name: 'My Love Language', image: imgLoveLanguage, weight: 8, selectionLimit: 3, answersCount: 15, description: 'Identifies how the user prefers to give and receive affection.' },
-  { id: 7, name: 'My Lifestyle', image: imgLifestyle, weight: 7, selectionLimit: 3, answersCount: 15, description: 'Describes the user’s preferred daily rhythm, habits and environment.' },
-  { id: 8, name: 'Relationship Vision', image: imgRelationshipVision, weight: 10, selectionLimit: 3, answersCount: 15, description: 'Identifies the type of relationship and future the user wants to build.' },
+interface Question {
+  id: string;
+  type: QuestionType;
+  title: string;
+  question: string;
+  selectionLimit: number;
+  options: string[];
+}
+
+const PROFILE_QUESTIONS: Question[] = [
+  {
+    id: 'P1', type: 'Profile', title: 'What are you looking for today?', question: 'What best describes what you\'re looking for right now?', selectionLimit: 1,
+    options: ['The love of my life', 'A serious relationship', 'Open to seeing where things go', 'Meeting new people', 'Casual dating', 'I\'m not sure yet']
+  },
+  {
+    id: 'P2', type: 'Profile', title: 'Choose Your 3 Core Values', question: 'What are the three values that define you the most?', selectionLimit: 3,
+    options: ['Honesty', 'Respect', 'Family', 'Freedom', 'Kindness', 'Loyalty', 'Authenticity', 'Adventure', 'Stability', 'Sense of Humor', 'Spirituality', 'Personal Growth', 'Creativity', 'Ambition', 'Independence']
+  },
+  {
+    id: 'P3', type: 'Profile', title: 'Which qualities attract you the most?', question: 'What qualities make you fall for someone?', selectionLimit: 2,
+    options: ['Honesty', 'Kindness', 'Intelligence', 'Sense of Humor', 'Confidence', 'Authenticity', 'Emotional Maturity', 'Ambition', 'Passion', 'Loyalty', 'Calmness', 'Open-mindedness', 'Generosity', 'Adventurous Spirit', 'Good Communication']
+  },
+  {
+    id: 'P4', type: 'Profile', title: 'Your Biggest Deal Breakers', question: 'What would immediately make a relationship impossible for you?', selectionLimit: 2,
+    options: ['Lies', 'Infidelity', 'Lack of Respect', 'Manipulation', 'Jealousy', 'Violence or Aggression', 'Lack of Communication', 'Selfishness', 'Addiction', 'Emotional Immaturity', 'Lack of Ambition', 'Dishonesty', 'Excessive Control', 'Negativity', 'Lack of Commitment']
+  },
+  {
+    id: 'P5', type: 'Profile', title: 'Your Biggest Dreams', question: 'If everything were possible, what would you most like to build in your life?', selectionLimit: 2,
+    options: ['Grow Old Together', 'Build a Happy Family', 'Travel the World', 'Achieve Financial Freedom', 'Start My Own Business', 'Buy My Dream Home', 'Change Country and Start a New Life', 'Help Others Make a Difference', 'Find My Soulmate', 'Live a Peaceful Life', 'Leave a Positive Legacy', 'Create Something Meaningful', 'Have Children', 'Live Close to Nature', 'Wake Up Every Day Happy']
+  },
+  {
+    id: 'P6', type: 'Profile', title: 'Your Biggest Flaws', question: 'Which flaws best describe you?', selectionLimit: 2,
+    options: ['Stubborn', 'Impatient', 'Too Sensitive', 'Overthinker', 'Perfectionist', 'Too Independent', 'Too Direct', 'Shy', 'Distracted', 'Jealous', 'Workaholic', 'Reserved', 'Impulsive', 'Disorganized', 'Too Trusting']
+  },
+  {
+    id: 'P7', type: 'Profile', title: 'How do you express love?', question: 'How do you naturally express love and affection?', selectionLimit: 1,
+    options: ['Quality Time', 'Physical Touch', 'Words of Affirmation', 'Receiving Gifts', 'Acts of Service']
+  },
+  {
+    id: 'P8', type: 'Profile', title: 'How do you usually handle conflict?', question: 'When disagreements happen, how do you usually react?', selectionLimit: 1,
+    options: ['I prefer discussing things immediately.', 'I need time before talking.', 'I try to avoid conflict.', 'I always look for compromise.', 'I sometimes struggle to communicate.']
+  },
+  {
+    id: 'P9', type: 'Profile', title: 'Which lifestyle describes you best?', question: 'Which lifestyle best represents you?', selectionLimit: 1,
+    options: ['Very calm', 'Mostly calm', 'Balanced', 'Active', 'Always on the go']
+  },
+  {
+    id: 'P10', type: 'Profile', title: 'How do you usually make important decisions?', question: 'When making important decisions, what do you rely on the most?', selectionLimit: 1,
+    options: ['Logic', 'Intuition', 'A balance of both']
+  },
+  {
+    id: 'P11', type: 'Profile', title: 'How easily do you express your emotions?', question: 'How comfortable are you expressing your emotions?', selectionLimit: 1,
+    options: ['Very easily', 'Fairly easily', 'Only with people I trust', 'With difficulty', 'I usually keep them to myself']
+  },
+  {
+    id: 'P12', type: 'Profile', title: 'How important is family to you?', question: 'What role does family play in your life?', selectionLimit: 1,
+    options: ['My highest priority', 'Very important', 'Important', 'Not very important', 'Not important at all']
+  },
+  {
+    id: 'P13', type: 'Profile', title: 'Which statement best describes your financial mindset?', question: 'Which statement best describes your relationship with money?', selectionLimit: 1,
+    options: ['I prefer saving money.', 'I enjoy spending and living in the moment.', 'I\'m balanced.', 'I prefer investing.', 'I take life one day at a time.']
+  },
+  {
+    id: 'P14', type: 'Profile', title: 'What type of vacation do you enjoy most?', question: 'What type of holiday would you choose?', selectionLimit: 1,
+    options: ['Beach', 'Mountains', 'Road Trip', 'City Break', 'Luxury Resort', 'Adventure Travel', 'I\'m happy with anything']
+  },
+  {
+    id: 'P15', type: 'Profile', title: 'How spontaneous are you?', question: 'How spontaneous are you in everyday life?', selectionLimit: 1,
+    options: ['I plan everything.', 'I like planning ahead.', 'A balance of both.', 'Very spontaneous.']
+  },
+  {
+    id: 'P16', type: 'Profile', title: 'Do you want children?', question: 'What best describes your wishes regarding children?', selectionLimit: 1,
+    options: ['Yes', 'No', 'Maybe', 'I already have children and don\'t want more.', 'I already have children and would like more.']
+  },
+  {
+    id: 'P17', type: 'Profile', title: 'What is your vision of a relationship?', question: 'Which statement best represents your ideal relationship?', selectionLimit: 1,
+    options: ['Sharing everything together.', 'Maintaining our independence.', 'A healthy balance between togetherness and independence.']
+  },
+  {
+    id: 'P18', type: 'Profile', title: 'What is your biggest fear in love?', question: 'What worries you the most in a relationship?', selectionLimit: 1,
+    options: ['Being cheated on.', 'Being abandoned.', 'Not being understood.', 'Losing my freedom.', 'Commitment.', 'Getting hurt.']
+  },
+  {
+    id: 'P19', type: 'Profile', title: 'Which personal quality would you most like to improve?', question: 'If you could improve one aspect of yourself, what would it be?', selectionLimit: 1,
+    options: ['Patience', 'Self-confidence', 'Communication', 'Courage', 'Organization', 'Empathy']
+  },
+  {
+    id: 'P20', type: 'Profile', title: 'What kind of humor makes you laugh the most?', question: 'What type of humor do you enjoy the most?', selectionLimit: 1,
+    options: ['Dark Humor', 'Wordplay', 'Absurd Situations', 'Self-deprecating Humor', 'Spontaneous People']
+  },
+  {
+    id: 'P21', type: 'Profile', title: 'In a relationship, what do you need most to feel truly happy?', question: 'What are the three things you need most to feel fulfilled in a relationship?', selectionLimit: 3,
+    options: ['To feel loved', 'To feel respected', 'To feel safe and secure', 'To be accepted for who I am', 'To grow together', 'To build a family', 'To laugh every day', 'To travel together', 'To feel supported', 'To have excellent communication', 'To share a strong friendship', 'To experience passion', 'To have stability', 'To have freedom', 'To share an intellectual connection', 'To share an emotional connection', 'To share a spiritual connection', 'To have an ambitious partner', 'To receive affection and tenderness', 'To admire and be admired by my partner']
+  }
+];
+
+const POST_DATE_QUESTIONS: Question[] = [
+  {
+    id: 'PD1', type: 'Post-Date', title: 'Overall Connection', question: 'How strong was your connection with this person?', selectionLimit: 1,
+    options: ['Exceptional connection', 'Strong connection', 'Good connection', 'Weak connection', 'No connection']
+  },
+  {
+    id: 'PD2', type: 'Post-Date', title: 'Authenticity', question: 'How comfortable did you feel being yourself during the conversation?', selectionLimit: 1,
+    options: ['Completely myself', 'Mostly myself', 'Neutral', 'Somewhat uncomfortable', 'Not myself at all']
+  },
+  {
+    id: 'PD3', type: 'Post-Date', title: 'Relationship Potential', question: 'Can you realistically imagine building a relationship with this person?', selectionLimit: 1,
+    options: ['Definitely', 'Probably', 'Maybe', 'Probably not', 'Definitely not']
+  },
+  {
+    id: 'PD4', type: 'Post-Date', title: 'Physical Attraction', question: 'How physically attracted were you to this person?', selectionLimit: 1,
+    options: ['Very attracted', 'Attracted', 'Neutral', 'Slightly attracted', 'Not attracted']
+  },
+  {
+    id: 'PD5', type: 'Post-Date', title: 'Emotional Connection', question: 'Did you feel an emotional connection?', selectionLimit: 1,
+    options: ['Very strong', 'Strong', 'Moderate', 'Weak', 'None']
+  },
+  {
+    id: 'PD6', type: 'Post-Date', title: 'Shared Values', question: 'How well do you think your values and life goals align?', selectionLimit: 1,
+    options: ['Excellent match', 'Good match', 'Unsure', 'Different', 'Completely different']
+  },
+  {
+    id: 'PD7', type: 'Post-Date', title: 'Decision', question: 'What would you like to happen next?', selectionLimit: 1,
+    options: ['Yes, I\'d like to exchange contact details.', 'Maybe, I\'d like more time to decide.', 'No, I don\'t wish to continue.']
+  },
+  {
+    id: 'PD8', type: 'Post-Date', title: 'Why did you make this decision?', question: 'What was the main reason for your choice?', selectionLimit: 3,
+    options: ['We had great chemistry.', 'I felt emotionally connected.', 'Our personalities matched well.', 'We shared similar values.', 'The conversation flowed naturally.', 'I found them physically attractive.', 'They made me feel comfortable.', 'They seemed genuine and authentic.', 'We have similar life goals.', 'We have compatible lifestyles.', 'I didn\'t feel enough chemistry.', 'Our personalities felt too different.', 'I wasn\'t physically attracted.', 'We wanted different things.', 'The conversation felt forced.', 'I couldn\'t be myself.', 'Other.']
+  }
 ];
 
 export const QuestionnaireLibrary = () => {
+  const [activeTab, setActiveTab] = useState<'Profile' | 'Post-Date'>('Profile');
   const [searchTerm, setSearchTerm] = useState('');
-  const [categories, setCategories] = useState(MOCK_CATEGORIES);
-  const [editingCategory, setEditingCategory] = useState<typeof MOCK_CATEGORIES[0] | null>(null);
+  
+  const [profileQuestions, setProfileQuestions] = useState(PROFILE_QUESTIONS);
+  const [postDateQuestions, setPostDateQuestions] = useState(POST_DATE_QUESTIONS);
+  
+  const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
 
-  const handleSaveCategory = (e: React.FormEvent) => {
+  const activeQuestions = activeTab === 'Profile' ? profileQuestions : postDateQuestions;
+  
+  const handleSaveQuestion = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingCategory) return;
+    if (!editingQuestion) return;
     
-    setCategories(prev => prev.map(c => c.id === editingCategory.id ? editingCategory : c));
-    setEditingCategory(null);
+    if (editingQuestion.type === 'Profile') {
+      setProfileQuestions(prev => prev.map(q => q.id === editingQuestion.id ? editingQuestion : q));
+    } else {
+      setPostDateQuestions(prev => prev.map(q => q.id === editingQuestion.id ? editingQuestion : q));
+    }
+    setEditingQuestion(null);
   };
 
-  const filteredCategories = categories.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredQuestions = activeQuestions.filter(q => 
+    q.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    q.question.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto pb-10">
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-serif text-[var(--color-navy)]">Questionnaire Library</h1>
-        <p className="text-gray-500">Manage the 8 matchmaking categories, answers, and scoring weights.</p>
+        <p className="text-gray-500">Manage the 21 Profile questions and 8 Post-Date feedback questions.</p>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex items-center gap-8 border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab('Profile')}
+          className={`pb-3 text-sm font-bold transition-colors border-b-2 ${
+            activeTab === 'Profile' ? 'text-[#C9A84C] border-[#C9A84C]' : 'text-gray-500 border-transparent hover:text-gray-700'
+          }`}
+        >
+          Profile Questions (21)
+        </button>
+        <button
+          onClick={() => setActiveTab('Post-Date')}
+          className={`pb-3 text-sm font-bold transition-colors border-b-2 ${
+            activeTab === 'Post-Date' ? 'text-[#C9A84C] border-[#C9A84C]' : 'text-gray-500 border-transparent hover:text-gray-700'
+          }`}
+        >
+          Post-Date Feedback (8)
+        </button>
       </div>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 shadow-sm border border-gray-100">
@@ -49,7 +194,7 @@ export const QuestionnaireLibrary = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
-            placeholder="Search categories..."
+            placeholder="Search questions..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-none focus:outline-none focus:ring-1 focus:ring-[#C9A84C] focus:border-[#C9A84C] transition-shadow text-sm"
@@ -63,45 +208,50 @@ export const QuestionnaireLibrary = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredCategories.map((category) => (
-          <div key={category.id} className="bg-white border border-gray-100 shadow-sm flex flex-col group relative overflow-hidden hover:shadow-md transition-shadow">
-            <div className="h-32 w-full overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-0"></div>
-              <img src={category.image} alt={category.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            </div>
-            
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {filteredQuestions.map((question) => (
+          <div key={question.id} className="bg-white border border-gray-100 shadow-sm flex flex-col group relative overflow-hidden hover:shadow-md transition-shadow">
             <div className="p-5 flex flex-col flex-1 gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#C9A84C]/10 text-[#C9A84C] flex items-center justify-center font-bold font-serif text-lg">
-                  {category.id}
+              <div className="flex items-start gap-3 mb-2">
+                <div className="w-8 h-8 rounded-full bg-[#F9F6F0] text-[#C9A84C] flex items-center justify-center font-bold text-xs shrink-0">
+                  {question.id.replace('P', '').replace('D', '')}
                 </div>
-                <h3 className="font-semibold text-[#1a2b49] text-lg leading-tight pr-6">{category.name}</h3>
+                <div>
+                  <h3 className="font-semibold text-[#1a2b49] text-base leading-tight">{question.title}</h3>
+                  <p className="text-xs text-gray-500 mt-1">{question.question}</p>
+                </div>
               </div>
-              <p className="text-sm text-gray-500 flex-1">{category.description}</p>
               
-              <div className="grid grid-cols-2 gap-2 mt-2 pt-4 border-t border-gray-50">
+              <div className="mt-2">
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Options ({question.options.length})</span>
+                <ul className="mt-2 flex flex-col gap-1">
+                  {question.options.slice(0, 3).map((opt, i) => (
+                    <li key={i} className="text-xs text-gray-700 bg-gray-50 px-2 py-1 border border-gray-100 rounded-sm truncate">
+                      • {opt}
+                    </li>
+                  ))}
+                  {question.options.length > 3 && (
+                    <li className="text-[10px] text-gray-400 italic px-2">
+                      + {question.options.length - 3} more options...
+                    </li>
+                  )}
+                </ul>
+              </div>
+
+              <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Weighting</span>
-                  <span className="text-sm font-medium text-gray-900">{category.weight}%</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Max Select</span>
-                  <span className="text-sm font-medium text-gray-900">{category.selectionLimit} answers</span>
-                </div>
-                <div className="flex flex-col gap-1 col-span-2 mt-2">
-                  <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Available Answers</span>
-                  <span className="text-sm font-medium text-gray-900">{category.answersCount} total</span>
+                  <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Selection Limit</span>
+                  <span className="text-sm font-medium text-gray-900">{question.selectionLimit} answer(s)</span>
                 </div>
               </div>
             </div>
             <div className="border-t border-gray-100 p-0 bg-gray-50 flex justify-end">
               <button 
-                onClick={() => setEditingCategory({...category})}
+                onClick={() => setEditingQuestion({...question})}
                 className="w-full py-3 text-sm font-semibold text-[var(--color-navy)] hover:text-[#C9A84C] hover:bg-orange-50/50 flex items-center justify-center gap-2 transition-colors cursor-pointer border-none bg-transparent"
               >
                 <Edit3 size={16} />
-                Edit Category
+                Edit Question
               </button>
             </div>
           </div>
@@ -109,62 +259,62 @@ export const QuestionnaireLibrary = () => {
       </div>
 
       {/* Edit Modal */}
-      {editingCategory && (
+      {editingQuestion && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white w-full max-w-lg shadow-2xl rounded-none flex flex-col max-h-[90vh]">
+          <div className="bg-white w-full max-w-2xl shadow-2xl rounded-none flex flex-col max-h-[90vh]">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-              <h2 className="text-xl font-serif text-[var(--color-navy)]">Edit Category: {editingCategory.id}</h2>
-              <button onClick={() => setEditingCategory(null)} className="text-gray-400 hover:text-gray-600 bg-transparent border-none text-xl cursor-pointer p-2">&times;</button>
+              <h2 className="text-xl font-serif text-[var(--color-navy)]">Edit Question: {editingQuestion.id}</h2>
+              <button onClick={() => setEditingQuestion(null)} className="text-gray-400 hover:text-gray-600 bg-transparent border-none text-xl cursor-pointer p-2">&times;</button>
             </div>
             
-            <form onSubmit={handleSaveCategory} className="p-6 flex flex-col gap-5 overflow-y-auto">
+            <form onSubmit={handleSaveQuestion} className="p-6 flex flex-col gap-5 overflow-y-auto custom-scrollbar">
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-gray-700">Category Name</label>
+                <label className="text-sm font-semibold text-gray-700">Internal Title</label>
                 <input 
                   type="text" 
-                  value={editingCategory.name}
-                  onChange={e => setEditingCategory({...editingCategory, name: e.target.value})}
+                  value={editingQuestion.title}
+                  onChange={e => setEditingQuestion({...editingQuestion, title: e.target.value})}
                   className="w-full px-4 py-2 border border-gray-200 focus:outline-none focus:border-[#C9A84C] text-sm"
                   required
                 />
               </div>
               
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-gray-700">Description</label>
+                <label className="text-sm font-semibold text-gray-700">Question Text (Displayed to User)</label>
                 <textarea 
-                  value={editingCategory.description}
-                  onChange={e => setEditingCategory({...editingCategory, description: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-200 focus:outline-none focus:border-[#C9A84C] text-sm resize-none h-24"
+                  value={editingQuestion.question}
+                  onChange={e => setEditingQuestion({...editingQuestion, question: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-200 focus:outline-none focus:border-[#C9A84C] text-sm resize-none h-20"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-semibold text-gray-700">Weight (%)</label>
-                  <input 
-                    type="number" 
-                    value={editingCategory.weight}
-                    onChange={e => setEditingCategory({...editingCategory, weight: parseInt(e.target.value) || 0})}
-                    className="w-full px-4 py-2 border border-gray-200 focus:outline-none focus:border-[#C9A84C] text-sm"
-                    min="0" max="100" required
-                  />
-                </div>
-                
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-semibold text-gray-700">Selection Limit</label>
-                  <input 
-                    type="number" 
-                    value={editingCategory.selectionLimit}
-                    onChange={e => setEditingCategory({...editingCategory, selectionLimit: parseInt(e.target.value) || 0})}
-                    className="w-full px-4 py-2 border border-gray-200 focus:outline-none focus:border-[#C9A84C] text-sm"
-                    min="1" max="15" required
-                  />
-                </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-sm font-semibold text-gray-700">Selection Limit (How many answers can they choose?)</label>
+                <input 
+                  type="number" 
+                  value={editingQuestion.selectionLimit}
+                  onChange={e => setEditingQuestion({...editingQuestion, selectionLimit: parseInt(e.target.value) || 1})}
+                  className="w-full px-4 py-2 border border-gray-200 focus:outline-none focus:border-[#C9A84C] text-sm"
+                  min="1" max="15" required
+                />
               </div>
 
-              <div className="mt-4 flex gap-3">
-                <button type="button" onClick={() => setEditingCategory(null)} className="flex-1 py-2.5 bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors border-none cursor-pointer text-sm">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-sm font-semibold text-gray-700 flex justify-between items-center">
+                  Options
+                  <span className="text-[10px] text-gray-400 font-normal">Edit answers below. Separate by newlines.</span>
+                </label>
+                <textarea 
+                  value={editingQuestion.options.join('\n')}
+                  onChange={e => setEditingQuestion({...editingQuestion, options: e.target.value.split('\n').filter(Boolean)})}
+                  className="w-full px-4 py-2 border border-gray-200 focus:outline-none focus:border-[#C9A84C] text-sm resize-none h-40"
+                  required
+                />
+              </div>
+
+              <div className="mt-4 flex gap-3 pt-4 border-t border-gray-100">
+                <button type="button" onClick={() => setEditingQuestion(null)} className="flex-1 py-2.5 bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors border-none cursor-pointer text-sm">
                   Cancel
                 </button>
                 <button type="submit" className="flex-1 py-2.5 bg-[var(--color-navy)] text-white font-medium hover:bg-opacity-90 transition-colors border-none cursor-pointer text-sm">

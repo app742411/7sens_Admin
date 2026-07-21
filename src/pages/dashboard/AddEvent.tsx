@@ -97,7 +97,8 @@ export const AddEvent = () => {
     price: '',
     internalNotes: '',
     tableCount: '',
-    roundDuration: '7'
+    roundDuration: '7',
+    isDateTBD: false
   });
 
   useEffect(() => {
@@ -135,14 +136,35 @@ export const AddEvent = () => {
           price: event.price.toString(),
           internalNotes: 'Mock internal note',
           tableCount: '20',
-          roundDuration: '7'
+          roundDuration: '7',
+          isDateTBD: false
         });
       }
     }
   }, [id, isEditMode]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData(prev => ({ ...prev, [name]: checked }));
+      return;
+    }
+    
+    setFormData(prev => {
+      const newData = { ...prev, [name]: value };
+      
+      // Automatic capacity splitting
+      if (name === 'capacity' && value) {
+        const total = parseInt(value) || 0;
+        const half = Math.floor(total / 2);
+        newData.maleQuota = half.toString();
+        newData.femaleQuota = half.toString();
+      }
+      
+      return newData;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -250,15 +272,28 @@ export const AddEvent = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#1B2A4A] mb-1.5">Date <span className="text-red-500">*</span></label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-sm font-medium text-[#1B2A4A]">Date <span className="text-red-500">*</span></label>
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input 
+                        type="checkbox"
+                        name="isDateTBD"
+                        checked={formData.isDateTBD}
+                        onChange={handleChange}
+                        className="w-3.5 h-3.5 rounded-sm border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]"
+                      />
+                      <span className="text-[11px] font-medium text-gray-500">TBD (Pre-registration)</span>
+                    </label>
+                  </div>
                   <div>
                     <input 
                       type="date" 
                       name="date"
-                      required
+                      required={!formData.isDateTBD}
+                      disabled={formData.isDateTBD}
                       value={formData.date}
                       onChange={handleChange}
-                      className="w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm text-gray-500"
+                      className={`w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm ${formData.isDateTBD ? 'bg-gray-100 text-transparent' : 'text-gray-500'}`}
                     />
                   </div>
                 </div>
@@ -268,10 +303,11 @@ export const AddEvent = () => {
                     <input 
                       type="time" 
                       name="startTime"
-                      required
+                      required={!formData.isDateTBD}
+                      disabled={formData.isDateTBD}
                       value={formData.startTime}
                       onChange={handleChange}
-                      className="w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm text-gray-500"
+                      className={`w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm ${formData.isDateTBD ? 'bg-gray-100 text-transparent' : 'text-gray-500'}`}
                     />
                   </div>
                 </div>
@@ -368,7 +404,9 @@ export const AddEvent = () => {
                     className="w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm"
                     placeholder="Enter number"
                   />
-                  <p className="text-[11px] text-gray-400 mt-1">Number required for auto-trigger</p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-snug">
+                    <strong className="text-gray-600">Auto-trigger threshold:</strong> If this number of men register, the event is automatically confirmed.
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#1B2A4A] mb-1.5">Required Female Quota <span className="text-red-500">*</span></label>
@@ -382,7 +420,9 @@ export const AddEvent = () => {
                     className="w-full border border-gray-200 px-3 py-2 rounded-none focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/20 focus:border-[#C9A84C] text-sm"
                     placeholder="Enter number"
                   />
-                  <p className="text-[11px] text-gray-400 mt-1">Number required for auto-trigger</p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-snug">
+                    <strong className="text-gray-600">Auto-trigger threshold:</strong> If this number of women register, the event is automatically confirmed.
+                  </p>
                 </div>
               </div>
             </div>
